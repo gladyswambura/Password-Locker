@@ -47,7 +47,7 @@ class Testuser(unittest.TestUser):
         test_save_multiple_user to check if we can save multiple user objects to our user_list
         '''
         self.new_user.save_user()  # saving the new user
-        test_user = User("userone","1234") # create user object with username and password as the arguments
+        test_user = User("user1","1234") # create user object with username and password as the arguments
         test_user.save_user()   # saving the new user
         self.assertEqual(len(User.user_list),2)   # check if the list is not empty (now it has two users)
     
@@ -62,5 +62,15 @@ class Testuser(unittest.TestUser):
         self.new_user.delete_user()  # deletes the new user
         self.assertEqual(len(User.user_list),1)   # check if the list is not empty (now it has one user since you deleted the other user)
 
+# Fifth test case
+    def test_find_user_by_user_name(self):
+        '''
+        test to check if we can find a user by user name and display information
+        '''
+        self.new_user.save_user()
+        test_user = User("user1","1234")
+        test_user.save_user()  # saving the new user
+        found_user = User.find_by_user_name("user1") # find_by_user_name method is used to search for a user by user name
+        self.assertEqual(found_user.password,test_user.password) # self.assertEqual is used to check if the list is not empty
 
 
