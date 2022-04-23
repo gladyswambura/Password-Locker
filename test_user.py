@@ -8,11 +8,17 @@ class Testuser(unittest.TestUser):
     Args:
         unittest.TestCase: TestCase class that helps in creating test cases
     '''
-    def setUp(self):
+    def setUp(self):   # setUp method to create an instance of user before each test case
         '''
         Set up method to run before each test cases.
         '''
         self.new_user = User("Gladys","1234") # create user object with username and password as the arguments
+
+    def tearDown(self):   # tearDown method to clean up after each test case has run
+        '''
+        tearDown method that does clean up after each test case has run.
+        '''
+        User.user_list = []
 
 # First test case
     def test_init(self):
@@ -27,6 +33,11 @@ class Testuser(unittest.TestUser):
         '''
         test_save_user test case to test if the user object is saved into the user list
         '''
-        self.new_user.save_user()
+        self.new_user.save_user()               # saving the new user
+        self.assertEqual(len(User.user_list),1) # self.assertEqual is used to check if the list is not empty
+        
+# Third test case
     
+    
+
 
