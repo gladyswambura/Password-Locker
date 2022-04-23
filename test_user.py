@@ -51,5 +51,16 @@ class Testuser(unittest.TestUser):
         test_user.save_user()   # saving the new user
         self.assertEqual(len(User.user_list),2)   # check if the list is not empty (now it has two users)
     
+# Fourth test case
+    def test_delete_user(self):
+        '''
+        test_delete_user to test if we can remove a user from our user list
+        '''
+        self.new_user.save_user()
+        test_user = User("userone","1234") # create user object with username and password as the arguments
+        test_user.save_user()   # saving the new user
+        self.new_user.delete_user()  # deletes the new user
+        self.assertEqual(len(User.user_list),1)   # check if the list is not empty (now it has one user since you deleted the other user)
+
 
 
