@@ -25,9 +25,9 @@ def delete_user(self):
     User.user_list.remove(self)
 
 @classmethod
-def find_by_first_name(cls,user_name, password):
+def verify_user(cls,user_name, password):
     '''
-    Method that takes in a username and returns a user that matches that username.
+    Method that takes in a username and password and checks if it matches the entry in the user_list.
     '''
     user = ''
     for user in cls.user_list:
@@ -35,5 +35,10 @@ def find_by_first_name(cls,user_name, password):
             user=user.user_name
             return user
 
-
+@classmethod
+def display_users(cls):
+    '''
+    method that returns the user list
+    '''
+    return cls.user_list
     
