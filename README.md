@@ -27,7 +27,7 @@ A user can:
 
 ## SetUp / Installation Requirements
 ### Prerequisites
-* python3.6
+* python3.8
 * pip
 * pyperclip
 * xclip
