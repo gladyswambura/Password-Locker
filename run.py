@@ -114,7 +114,7 @@ def main():                        #this function is responsible for the flow of
     while True:                     #this is the main loop, it will keep running until the user enters the short code 'e'
         short_code=input().lower()  #The user input is converted to lowercase
        
-        if short_code=="s":        #create account
+        if short_code=="s":        #sign up
             print("Enter your name to start signing up")
             name = input ()
             print(f"{name}, Sign up to start")
@@ -127,15 +127,107 @@ def main():                        #this function is responsible for the flow of
             print(f"Account name:{account_name} \n Password:{account_password}")
             print('Write a username, one that you can remember')
             username=input()
-            print(f"Hello {username}, your account has been successfully created!")
+            print(f"Hello {username}, logged in! Welcome!")
             print("*"*60)       #prints a line of stars
-            print(f"To create a new account, enter:\n 'na'for a new account,\n  'ex'for an existing account \n")
-        
-        while True:
-            print("To proceed select any:\n CC - Create a new credential  \n DS-Display your credentials \n FC - Find a credential \n D - Delete credential \n EX - Exit the application \n") 
-            short_code = input().lower().strip()
-            print("*"*70)
+            print(f"To create a new account, enter:\n 'NA'for a new account,\n  'EX'for an existing account \n")
+            short_code = input("").lower().strip()     
 
+
+        if short_code=='na':           #create a new user account
+            print("Create new account")
+            print("Account name:")
+            account_name=input()
+            print("Username:")
+            username=input()
+            print("password")
+            password=""
+
+            while True:
+                print("use shortcode 'Tp' to type your password \n and 'Gp' to generate a password")
+                password_choice = input().lower().strip()
+                if password_choice=='tp':
+                    password=input("Enter your password \n")
+                    break
+                
+                elif password_choice =='gp':
+                    password = input(generate_password(password))
+                    print(f"Your password is {password}")
+                    break
+
+                else:
+                    print("Invalid password")
+
+            save_user(create_user_account(username,password))  
+            print("-"*60)
+            print(f"Hello {username}, Your {account_name} account  has been created succesfully! Your password is: {password}")
+            print("-"*60) 
+
+
+        while True:
+            print("To proceed select shortcodes:\n 'cc' to  Create a new credential \n 'ds' to Display your credentials \n 'fc' to Find a credential \n 'd' to Delete credential \n 'e' to Exit the application \n") 
+            short_code = input().lower().strip()
+            print("*"*60)
+
+            if short_code == "cc":   #creates new credentals
+                print("Create new credentials")
+                print("-"*80)
+                print("Account name:")
+                account_name = input().lower()
+                print("Your Account username:")
+                username = input()
+                print(" TY - Type your own pasword if you already have an account:\n Gp - Generate a random Password")
+                password_Choice = input().lower().strip()
+
+                if password_Choice=="ty":   #if the user wants to type in their own password
+                    password = input("Enter Your Own Password\n")
+                    break
+                elif password_Choice=="gp":  #if the user wants to generate a random password
+                    password = generate_password(password)
+                    break
+                else:
+                    print("invalid password")
+                save_credentials(create_new_credentials(account_name,account_name,account_password))
+                print('\n')
+                print(f"Account Credential for:Account {account_name} :Username: {username} Password:{password} have been created succesfully")
+                print('\n')    
+
+            elif  short_code =="ds":
+                print("ACCOUNT DETAILS ARE:")
+                print("*-"*60)
+
+                for credential in display_Credentials():
+                    print(f"{credential.account_name}\n {credential.username}\n {credential.password}")
+
+                else:
+                    print("NO ACCOUNT!!!!")  
+
+            elif short_code=="fc":
+                print("Enter the account name you want to search for")
+                search_account = input()
+                if find_account(search_account):
+                    search_account = find_account(search_account)
+                    print(f"{search_account.account_name} {search_account.username} {search_account.password}")
+                else:
+                    print("Account not found")
+
+            elif short_code=="d":
+                print("Enter the account name you want to delete")
+                search_account = input()
+                if find_account(search_account):
+                    search_account = find_account(search_account)
+                else:
+                    print("Account not found")
+
+                    print(f"Are you sure you want to delete {search_account.account_name}?")
+                    print(f"if yes type 'yes' and if no type shortcode 'e' ")
+
+                if type == "y":
+                    delete_credentials(search_account)
+                    print(f"{search_account.account_name} {search_account.username} {search_account.password}")
+                else:
+                    print("-"*60)
+                    print("Thank you for using password locker")
+                    break  
 
         if short_code=="l":          #login
             print("-"*60)            #prints a line of dashes
