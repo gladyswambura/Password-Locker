@@ -94,7 +94,7 @@ def display_Credentials():
     '''
     Display all the saved credentials
     '''
-    return display_Credentials()      #returns the credentials list 
+    return Credentials.display_credentials()       #returns the credentials list 
 
 
 def generate_password(self):
@@ -108,29 +108,48 @@ def generate_password(self):
 def main():                        #this function is responsible for the flow of the application
     print("Hello, welcome to password locker!")
     print('\n')
-    print("To login to your account, enter shortcode 'l' To sign up, enter shortcode 's' to to exit the program enter short code 'e'")
-    print('\n')
+    print("To login to your account, enter shortcode 'l'; To sign up, enter shortcode 's'; to exit the program enter short code 'e'")
 
     while True:                     #this is the main loop, it will keep running until the user enters the short code 'e'
         short_code=input().lower()  #The user input is converted to lowercase
-       
+
+
+        if short_code=="l":          #login
+            print("-"*60)            #prints a line of dashes
+            print('To login, Enter your username')
+            username=input().strip
+            print('Enter your password')
+            password=str(input()).strip
+            user_exists=verify_user(username, password)
+            if  user_exists == username:
+                print(f"Welcome {username}!!, you are now logged in")
+            elif user_exists !=username:
+                print("Wrong username, use shortcode 'na' to create an account")
+            elif user_exists !=password:
+                print("Invalid password!, use shortcode 'na' to create an account")
+                print("*"*60)
+
+
         if short_code=="s":        #sign up
-            print("Enter your name to start signing up")
-            name = input ()
-            print(f"{name}, Sign up to start")
             print("-"*60)
-            print('To create a new account, Enter your account_name')
+            print('To sign up, Enter your account_name')
             account_name=input()
             print('Enter a password')
             account_password=str(input())
-            save_user(create_user_account(account_name, account_password))
             print(f"Account name:{account_name} \n Password:{account_password}")
             print('Write a username, one that you can remember')
             username=input()
             print(f"Hello {username}, logged in! Welcome!")
-            print("*"*60)       #prints a line of stars
-            print(f"To create a new account, enter:\n 'NA'for a new account,\n  'EX'for an existing account \n")
+            print("*"*60)   #prints a line of stars
+            save_user(create_user_account(account_password, username))     
+            print(f"To create a new account, enter:\n 'na'for a new account,\n  'ex'for an existing account \n")
             short_code = input("").lower().strip()     
+
+
+        if short_code == "e":      #exit the program
+            print("-"*60)
+            print("Thank you for using password locker")
+            break  
 
 
         if short_code=='na':           #create a new user account
@@ -143,7 +162,7 @@ def main():                        #this function is responsible for the flow of
             password=""
 
             while True:
-                print("use shortcode 'Tp' to type your password \n and 'Gp' to generate a password")
+                print("use shortcode 'Tp' to type your password and 'Gp' to generate a password")
                 password_choice = input().lower().strip()
                 if password_choice=='tp':
                     password=input("Enter your password \n")
@@ -157,16 +176,22 @@ def main():                        #this function is responsible for the flow of
                 else:
                     print("Invalid password")
 
-            save_user(create_user_account(username,password))  
+            save_user(create_user_account(username, password))  
             print("-"*60)
             print(f"Hello {username}, Your {account_name} account  has been created succesfully! Your password is: {password}")
             print("-"*60) 
-
-
-        while True:
+        
             print("To proceed select shortcodes:\n 'cc' to  Create a new credential \n 'ds' to Display your credentials \n 'fc' to Find a credential \n 'd' to Delete credential \n 'e' to Exit the application \n") 
             short_code = input().lower().strip()
             print("*"*60)
+
+            if short_code=='ex':   #login to an existing account
+                print("-"*60)
+                print("Welcome to your account!")
+                print("-"*60)
+                print("To proceed select shortcodes:\n 'cc' to  Create a new credential \n 'ds' to Display your credentials \n 'fc' to Find a credential \n 'd' to Delete credential \n 'e' to Exit the application \n") 
+                short_code = input().lower().strip()
+                print("*"*60)
 
             if short_code == "cc":   #creates new credentals
                 print("Create new credentials")
@@ -175,7 +200,7 @@ def main():                        #this function is responsible for the flow of
                 account_name = input().lower()
                 print("Your Account username:")
                 username = input()
-                print(" TY - Type your own pasword if you already have an account:\n Gp - Generate a random Password")
+                print(" Use shortcode 'ty' to Type your own pasword if you already have an account:\n Gp - Generate a random Password")
                 password_Choice = input().lower().strip()
 
                 if password_Choice=="ty":   #if the user wants to type in their own password
@@ -193,13 +218,21 @@ def main():                        #this function is responsible for the flow of
 
             elif  short_code =="ds":
                 print("ACCOUNT DETAILS ARE:")
-                print("*-"*60)
+                print("*-"*40)
+                print(' ')
 
-                for credential in display_Credentials():
-                    print(f"{credential.account_name}\n {credential.username}\n {credential.password}")
-
+                if display_Credentials(username):
+                    print("Here is a list of all your credentials")
+                    print(' ')
+                    print('\n')
+                    for credentials in display_Credentials(username):
+                        print(f"Account name: {credentials.account_name} \n Username: {credentials.username} \n Password: {credentials.password}")
+                        print(' ')
+                        print("To proceed select shortcodes:\n 'cc' to  Create a new credential")
                 else:
-                    print("NO ACCOUNT!!!!")  
+                    print(' ')
+                    print("You don't seem to have any credentials saved yet")
+                    print(' ') 
 
             elif short_code=="fc":
                 print("Enter the account name you want to search for")
@@ -228,29 +261,7 @@ def main():                        #this function is responsible for the flow of
                     print("-"*60)
                     print("Thank you for using password locker")
                     break  
-
-        if short_code=="l":          #login
-            print("-"*60)            #prints a line of dashes
-            print('To login, Enter your username')
-            username=input().strip
-            print('Enter your password')
-            password=str(input()).strip
-            user_exists=verify_user(username, password)
-            if  user_exists == username:
-                print(f"Welcome {username}!!, you are now logged in")
-            elif user_exists !=username:
-                print("Wrong username, use shortcode 'c' to create an account")
-            elif user_exists !=password:
-                print("Invalid password!, use shortcode 'c' to create an account")
-                print("*"*60)
           
-
-
-        elif short_code == "e":
-            print("-"*60)
-            print("Thank you for using password locker")
-            break  
-
 
 
 
