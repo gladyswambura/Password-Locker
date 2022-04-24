@@ -105,36 +105,55 @@ def generate_password(self):
     return gen_password
 
 
-def main():
+def main():                        #this function is responsible for the flow of the application
     print("Hello, welcome to password locker!")
     print('\n')
-    print("To login to your account, enter shortcode 'l' To create a new account, enter shortcode 'c' to to exit the program enter short code 'e'")
+    print("To login to your account, enter shortcode 'l' To sign up, enter shortcode 's' to to exit the program enter short code 'e'")
     print('\n')
 
-    while True:
-        short_code=input().lower()
-        if short_code=="l":          #login
-            print("-"*60)
-            print('To login, Enter your username')
-            username=input().strip
-            print('Enter your password')
-            password=str(input()).strip
-            user_exists=verify_user(username, password)
-            if  user_exists == username:
-                print(f"Hello {username}, you are now logged in")
-            elif user_exists !=username:
-                print("Wrong username or password, use shortcode 'c' to create an account")
-        elif short_code=="c":        #create account
+    while True:                     #this is the main loop, it will keep running until the user enters the short code 'e'
+        short_code=input().lower()  #The user input is converted to lowercase
+       
+        if short_code=="s":        #create account
+            print("Enter your name to start signing up")
+            name = input ()
+            print(f"{name}, Sign up to start")
             print("-"*60)
             print('To create a new account, Enter your account_name')
             account_name=input()
             print('Enter a password')
             account_password=str(input())
             save_user(create_user_account(account_name, account_password))
+            print(f"Account name:{account_name} \n Password:{account_password}")
             print('Write a username, one that you can remember')
             username=input()
-            print(f"Hello {username}, your account has been created")
-            print(f"your credentials are:\n Account name:{account_name} \n Password:{account_password}")
+            print(f"Hello {username}, your account has been successfully created!")
+            print("*"*60)       #prints a line of stars
+            print(f"To create a new account, enter:\n 'na'for a new account,\n  'ex'for an existing account \n")
+        
+        while True:
+            print("To proceed select any:\n CC - Create a new credential  \n DS-Display your credentials \n FC - Find a credential \n D - Delete credential \n EX - Exit the application \n") 
+            short_code = input().lower().strip()
+            print("*"*70)
+
+
+        if short_code=="l":          #login
+            print("-"*60)            #prints a line of dashes
+            print('To login, Enter your username')
+            username=input().strip
+            print('Enter your password')
+            password=str(input()).strip
+            user_exists=verify_user(username, password)
+            if  user_exists == username:
+                print(f"Welcome {username}!!, you are now logged in")
+            elif user_exists !=username:
+                print("Wrong username, use shortcode 'c' to create an account")
+            elif user_exists !=password:
+                print("Invalid password!, use shortcode 'c' to create an account")
+                print("*"*60)
+          
+
+
         elif short_code == "e":
             print("-"*60)
             print("Thank you for using password locker")
