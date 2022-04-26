@@ -90,7 +90,7 @@ def verify_credentials(self):
         return False
 
 
-def display_Credentials():
+def display_credentials():
     '''
     Display all the saved credentials
     '''
@@ -104,166 +104,165 @@ def generate_password(self):
     gen_password=Credentials.generate_password(self)
     return gen_password
 
-
-def main():                        #this function is responsible for the flow of the application
-    print("Hello, welcome to password locker!")
+def main():
+    print("Welcome to password locker!")
+    print("Enter your name to start signing up")
+    name = input ()
+    print(f"{name}, Sign up to start")
     print('\n')
-    print("To login to your account, enter shortcode 'l'; To sign up, enter shortcode 's'; to exit the program enter short code 'e'")
+    print("Reply with  : cc - Sign Up,  ex -exit ")
+    print("-" * 80)
+    while True:
 
-    while True:                     #this is the main loop, it will keep running until the user enters the short code 'e'
-        short_code=input().lower()  #The user input is converted to lowercase
+        short_code = input().lower()
+        if short_code == 'cc':
+            print("Account creating process begins...")
+            print("Please enter the following information:")
+            print("Username: ")
+            username = input()
+            print("Password: ")
+            password = input()
+            save_user(create_user_account(username, password))
+            print('\n')
+            print(f"{name}'s Account information: ")
+            print(f"Username: {username} , Password:{password}")
+            print('\n')
+            print(f"Logged in. Welcome {username}!")
+            print("*" * 80)
+            print("create new account, use:\n na--new account,\n  ex--existing account,\n")
 
 
-        if short_code=="l":          #login
-            print("-"*60)            #prints a line of dashes
-            print('To login, Enter your username')
-            username=input().strip
-            print('Enter your password')
-            password=str(input()).strip
-            user_exists=verify_user(username, password)
-            if  user_exists == username:
-                print(f"Welcome {username}!!, you are now logged in")
-            elif user_exists !=username:
-                print("Wrong username, use shortcode 'na' to create an account")
-            elif user_exists !=password:
-                print("Invalid password!, use shortcode 'na' to create an account")
-                print("*"*60)
 
 
-        if short_code=="s":        #sign up
-            print("-"*60)
-            print('To sign up, Enter your account_name')
+            short_code = input("").lower().strip()
+
+        if short_code=='na':
+            print("Create new account i.e Facebook")
+            print("Account name")
             account_name=input()
-            print('Enter a password')
-            account_password=str(input())
-            print(f"Account name:{account_name} \n Password:{account_password}")
-            print('Write a username, one that you can remember')
-            username=input()
-            print(f"Hello {username}, logged in! Welcome!")
-            print("*"*60)   #prints a line of stars
-            save_user(create_user_account(account_password, username))     
-            print(f"To create a new account, enter:\n 'na'for a new account,\n  'ex'for an existing account \n")
-            short_code = input("").lower().strip()     
-
-
-        if short_code == "e":      #exit the program
-            print("-"*60)
-            print("Thank you for using password locker")
-            break  
-
-
-        if short_code=='na':           #create a new user account
-            print("Create new account")
-            print("Account name:")
-            account_name=input()
-            print("Username:")
+            print("username")
             username=input()
             print("password")
             password=""
-
             while True:
-                print("use shortcode 'Tp' to type your password and 'Gp' to generate a password")
-                password_choice = input().lower().strip()
-                if password_choice=='tp':
-                    password=input("Enter your password \n")
-                    break
-                
-                elif password_choice =='gp':
-                    password = input(generate_password(password))
-                    print(f"Your password is {password}")
+                print("Tp-type your password,\n Gp-generate password")
+                pass_choice = input().lower().strip()
+                if pass_choice=='tp':
+                    print("\n")
+                    
+                    password=input("Enter password\n")
                     break
 
+                elif pass_choice =='gp':
+                    password = input(generate_password(password))
+                    
+                    break
                 else:
                     print("Invalid password")
 
-            save_user(create_user_account(username, password))  
-            print("-"*60)
-            print(f"Hello {username}, Your {account_name} account  has been created succesfully! Your password is: {password}")
-            print("-"*60) 
-        
-            print("To proceed select shortcodes:\n 'cc' to  Create a new credential \n 'ds' to Display your credentials \n 'fc' to Find a credential \n 'd' to Delete credential \n 'e' to Exit the application \n") 
+            save_user(create_user_account(username,password))
+            print("-"*90)
+            print(f"Hello {username}, Your {account_name} account  has been created succesfully created! Your password is: {password}")
+            print("-"*90) 
+        while True:
+
+
+            print("To proceed select any:\n CC - Create a new credential  \n DS-Display your credentials \n FC - Find a credential \n D - Delete credential \n EX - Exit the application \n") 
             short_code = input().lower().strip()
-            print("*"*60)
-
-            if short_code=='ex':   #login to an existing account
-                print("-"*60)
-                print("Welcome to your account!")
-                print("-"*60)
-                print("To proceed select shortcodes:\n 'cc' to  Create a new credential \n 'ds' to Display your credentials \n 'fc' to Find a credential \n 'd' to Delete credential \n 'e' to Exit the application \n") 
-                short_code = input().lower().strip()
-                print("*"*60)
-
-            if short_code == "cc":   #creates new credentals
+            if short_code == "cc":
                 print("Create new credentials")
                 print("-"*80)
-                print("Account name:")
+                print("Account name ....")
                 account_name = input().lower()
-                print("Your Account username:")
+                print("Your Account username")
                 username = input()
-                print(" Use shortcode 'ty' to Type your own pasword if you already have an account:\n Gp - Generate a random Password")
+                # while True:
+                print(" TY - Type your own pasword if you already have an account:\n GR - Generate a random Password")
                 password_Choice = input().lower().strip()
-
-                if password_Choice=="ty":   #if the user wants to type in their own password
+                if password_Choice=="ty":
                     password = input("Enter Your Own Password\n")
                     break
-                elif password_Choice=="gp":  #if the user wants to generate a random password
+                elif password_Choice=="GP":
                     password = generate_password(password)
                     break
                 else:
                     print("invalid password")
-                save_credentials(create_new_credentials(account_name,account_name,account_password))
+                save_credentials(create_new_credentials(account_name,username,password))
                 print('\n')
-                print(f"Account Credential for:Account {account_name} :Username: {username} Password:{password} have been created succesfully")
-                print('\n')    
-
-            elif  short_code =="ds":
+                print(f"Account Credential for:Account {account_name} :Username: {username} - Password:{password} created succesfully")
+                print('\n')        
+            if  short_code =="ds":
                 print("ACCOUNT DETAILS ARE:")
-                print("*-"*40)
-                print(' ')
+                print(" "*30)
 
-                if display_Credentials(username):
-                    print("Here is a list of all your credentials")
-                    print(' ')
-                    print('\n')
-                    for credentials in display_Credentials(username):
-                        print(f"Account name: {credentials.account_name} \n Username: {credentials.username} \n Password: {credentials.password}")
-                        print(' ')
-                        print("To proceed select shortcodes:\n 'cc' to  Create a new credential")
+                for credential in display_credentials():
+                    print(f"{credential.account_name}\n {credential.username}\n {credential.password}")
                 else:
-                    print(' ')
-                    print("You don't seem to have any credentials saved yet")
-                    print(' ') 
+
+                    print("NO ACCOUNT!!!!")
+
 
             elif short_code=="fc":
-                print("Enter the account name you want to search for")
-                search_account = input()
-                if find_account(search_account):
-                    search_account = find_account(search_account)
-                    print(f"{search_account.account_name} {search_account.username} {search_account.password}")
+                print("Which Account are you trying to find???")
+                search_credentials= input()
+                if find_account(search_credentials):
+                    search_account=find_account(search_credentials)
+                    print(f"{search_account.account_name}\n{search_account.username} \n {search_account.password}")
                 else:
-                    print("Account not found")
+                    print("Account doesn't exist")
+                    print('\n')
 
-            elif short_code=="d":
-                print("Enter the account name you want to delete")
-                search_account = input()
-                if find_account(search_account):
-                    search_account = find_account(search_account)
-                else:
-                    print("Account not found")
 
-                    print(f"Are you sure you want to delete {search_account.account_name}?")
-                    print(f"if yes type 'yes' and if no type shortcode 'e' ")
+            elif short_code == "d":
+                print("Enter account name of the Credentials you want to delete")
+            search_name = input().lower()
+            if find_account(search_name):
+                search_credential = find_account(search_name)
+                print("_"*40)
+                search_credential.delete_credentials()
+                print('\n')
+                print(f"Your stored credentials for : {search_credential.account_name} successfully deleted!!!")
+                print('\n')
+            else:
+                print("The Credential you want to delete does not exist")   
 
-                if type == "y":
-                    delete_credentials(search_account)
-                    print(f"{search_account.account_name} {search_account.username} {search_account.password}")
-                else:
-                    print("-"*60)
-                    print("Thank you for using password locker")
-                    break  
-          
 
+
+            if short_code == "ex":
+                print("Bye ....")
+                break
+            else:
+                print("I really didn't get that. Please use the short codes")
 
 
 if __name__ == '__main__':
-    main()
+    main()      
+                                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
